@@ -28,6 +28,18 @@ Linux debian 6.1.0-28-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.119-1 (2024-11-22)
 set -e
 set -x
 
+# Get home directory and create project path
+HOME_DIR="$HOME"
+PROJECT_NAME="uppercase-converter"
+PROJECT_PATH="$HOME_DIR/$PROJECT_NAME"
+
+# Remove existing project if it exists
+if [ -d "$PROJECT_PATH" ]; then
+    rm -rf "$PROJECT_PATH"
+fi
+
+echo "Setting up project in: $PROJECT_PATH"
+
 # Setup logging with timestamps
 LOG_DIR="logs"
 LOG_FILE="${LOG_DIR}/project_setup_$(date +%Y%m%d_%H%M%S).log"
@@ -259,13 +271,134 @@ EOL
 EOL
 }
 
+# Function to open reports in browser
+open_reports() {
+    echo "Opening reports in browser..."
+    
+    local COVERAGE_HTML="$PROJECT_PATH/target/llvm-cov/html/index.html"
+    local PROFILING_HTML="$PROJECT_PATH/target/debug/profiling/html/index.html"
+    
+    if [ -f "$COVERAGE_HTML" ]; then
+        xdg-open "$COVERAGE_HTML"
+        echo -e "${GREEN}Coverage report opened${NC}"
+    else
+        echo -e "${RED}Coverage report not found${NC}"
+    fi
+    
+    if [ -f "$PROFILING_HTML" ]; then
+        xdg-open "$PROFILING_HTML"
+        echo -e "${GREEN}Profiling report opened${NC}"
+    else
+        echo -e "${RED}Profiling report not found${NC}"
+    fi
+}
+
+# Function: Generate profiling data
+generate_profiling() {
+    echo "Generating profiling data..."
+    
+    # Set profiling flags
+    export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
+    
+    # Clean and create profiling directory
+    rm -rf target/debug/profiling
+    mkdir -p target/debug/profiling
+    
+    # Run tests with profiling
+    LLVM_PROFILE_FILE="target/debug/profiling/coverage-%p-%m.profraw" cargo test
+    
+    # Wait for file system
+    sleep 2
+    
+    # Check for profile data
+    if ! compgen -G "target/debug/profiling/*.profraw" > /dev/null; then
+        echo -e "${RED}No profile data generated${NC}"
+        return 1
+    fi
+    
+    # Merge profile data
+    llvm-profdata merge \
+        -sparse target/debug/profiling/*.profraw \
+        -o target/debug/profiling/merged.profdata || {
+        echo -e "${RED}Failed to merge profile data${NC}"
+        return 1
+    }
+    
+    # Find the correct test binary
+    TEST_BIN=$(find target/debug/deps \
+        -type f -executable \
+        -name "uppercase_converter-*" \
+        ! -name "*.d" \
+        -print0 | xargs -0 ls -t | head -n1)
+    
+    if [ ! -f "$TEST_BIN" ]; then
+        echo -e "${RED}Test binary not found${NC}"
+        return 1
+    fi
+    
+    echo "Using test binary: $TEST_BIN"
+    
+    # Generate HTML report
+    mkdir -p target/debug/profiling/html
+    llvm-cov show \
+        --use-color \
+        --ignore-filename-regex='/.cargo/registry' \
+        --format=html \
+        --instr-profile=target/debug/profiling/merged.profdata \
+        --object "$TEST_BIN" \
+        --output-dir=target/debug/profiling/html \
+        --show-instantiations \
+        --show-line-counts-or-regions || {
+        echo -e "${RED}Failed to generate HTML report${NC}"
+        return 1
+    }
+    
+    # Generate text report
+    llvm-cov report \
+        --use-color \
+        --ignore-filename-regex='/.cargo/registry' \
+        --instr-profile=target/debug/profiling/merged.profdata \
+        --object "$TEST_BIN" \
+        --show-branch-summary \
+        > target/debug/profiling/coverage_report.txt || {
+        echo -e "${RED}Failed to generate text report${NC}"
+        return 1
+    }
+    
+    echo -e "${GREEN}Profiling reports generated successfully${NC}"
+}
+# Main execution
 main() {
-    # ...existing code...
+    echo "Starting project setup at $(date)"
+    
     check_requirements || exit 1
     setup_project || exit 1
-    configure_vscode || exit 1  # Add this line
     create_source_files || exit 1
-    # ...existing code...
+    configure_project || exit 1
+    
+    # Run tests and generate reports
+    cargo fmt || true
+    cargo clippy
+    cargo test
+    cargo llvm-cov --html --output-dir target/llvm-cov/html
+    cargo llvm-cov --lcov --output-path target/llvm-cov/lcov.info
+    generate_profiling || echo -e "${YELLOW}Profiling failed but continuing...${NC}"
+    open_reports
+    
+    echo -e "${GREEN}Project setup complete!${NC}"
+    echo "Project location: $PROJECT_PATH"
+    echo "Coverage report: $PROJECT_PATH/target/llvm-cov/html/index.html"
+    echo "Profiling report: $PROJECT_PATH/target/debug/profiling/html/index.html"
+    echo "Log file: $LOG_FILE"
+}
+
+# Run main function with error handling
+main || {
+    echo -e "${RED}Script failed! Check the log file: $LOG_FILE${NC}"
+    exit 1
+}
+
+:
 }
 ```
 
