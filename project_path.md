@@ -221,7 +221,30 @@ fn main() {
 EOL
 }
 
- Function: Configure VS Code settings
+# Function: Configure project
+configure_project() {
+    echo "Configuring project..."
+    
+    # Create VS Code settings
+    mkdir -p .vscode
+    cat > .vscode/settings.json << 'EOL'
+{
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "coverage-gutters.lcovname": "lcov.info",
+    "coverage-gutters.showLineCoverage": true,
+    "coverage-gutters.showRulerCoverage": true,
+    "editor.formatOnSave": true
+}
+EOL
+
+    # Initialize git repository
+    git init
+    echo "target/" > .gitignore
+    git add .
+    git commit -m "Initial commit"
+}
+
+# Function: Configure VS Code settings
 configure_vscode() {
     mkdir -p .vscode
     
@@ -271,6 +294,28 @@ EOL
 EOL
 }
 
+# Function: Run tests and generate coverage
+run_tests_and_coverage() {
+    echo "Running tests and generating coverage..."
+    
+    # Format code
+    cargo fmt
+    
+    # Run tests with coverage
+    cargo llvm-cov clean
+    cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+    cargo llvm-cov html
+    
+    # Check coverage percentage
+    local coverage=$(cargo llvm-cov --summarize | grep "line coverage" | awk '{print $4}')
+    echo "Coverage: $coverage"
+    
+    if (( $(echo "$coverage < 100" | bc -l) )); then
+        echo -e "${RED}Warning: Coverage below 100% ($coverage%)${NC}"
+    else
+        echo -e "${GREEN}Full coverage achieved!${NC}"
+    fi
+}
 # Function to open reports in browser
 open_reports() {
     echo "Opening reports in browser..."

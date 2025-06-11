@@ -6,6 +6,7 @@
         "clippy",
         "craete",
         "eprintln",
+        "lcovname",
         "lldb",
         "Ploease",
         "println",
