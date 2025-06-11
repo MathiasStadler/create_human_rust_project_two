@@ -2707,7 +2707,7 @@ set -x
 HOME_DIR="$HOME"
 PROJECT_NAME="uppercase-converter"
 PROJECT_PATH="$HOME_DIR/$PROJECT_NAME"
-
+# [ ] - Ceck and create project folder
 # Check if project directory exists and handle it
 if [ -d "$PROJECT_PATH" ]; then
     echo "Warning: Project directory already exists at: $PROJECT_PATH"
