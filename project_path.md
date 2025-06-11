@@ -34,6 +34,15 @@ Linux debian 6.1.0-28-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.119-1 (2024-11-22)
 ><!-- spell-checker: disable -->
 ><!-- spell-checker: enable -->
 >```
+<!-- To comply with the format -->
+&nbsp;;
+>[!TIP]
+>Shortcut to create a new file VSCode
+<!-- To comply with the format -->
+>```bash
+>#code <file_name>
+>code test.txt
+>```
 
 I never plan never far ahead. Carpe diam
 
