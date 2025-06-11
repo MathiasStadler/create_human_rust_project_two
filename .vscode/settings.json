@@ -3,7 +3,10 @@
         "agsin",
         "Analyse",
         "binutils",
+        "Ccodegen",
         "clippy",
+        "Coverflow",
+        "Cpanic",
         "craete",
         "eprintln",
         "lcovname",
@@ -15,11 +18,13 @@
         "programm",
         "reviiew",
         "rustc",
+        "RUSTDOCFLAGS",
         "RUSTFLAGS",
         "rustup",
         "ryanluker",
         "staeps",
         "thiserror",
-        "trapapa"
+        "trapapa",
+        "Zpanic"
     ]
 }

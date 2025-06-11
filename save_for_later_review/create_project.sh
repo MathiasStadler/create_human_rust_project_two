@@ -199,6 +199,29 @@ fn main() {
 EOL
 }
 
+# Function: Configure project
+configure_project() {
+    echo "Configuring project..."
+    
+    # Create VS Code settings
+    mkdir -p .vscode
+    cat > .vscode/settings.json << 'EOL'
+{
+    "rust-analyzer.checkOnSave.command": "clippy",
+    "coverage-gutters.lcovname": "lcov.info",
+    "coverage-gutters.showLineCoverage": true,
+    "coverage-gutters.showRulerCoverage": true,
+    "editor.formatOnSave": true
+}
+EOL
+
+    # Initialize git repository
+    git init
+    echo "target/" > .gitignore
+    git add .
+    git commit -m "Initial commit"
+}
+
 # Function: Configure VS Code settings
 configure_vscode() {
     mkdir -p .vscode
@@ -249,6 +272,28 @@ EOL
 EOL
 }
 
+# Function: Run tests and generate coverage
+run_tests_and_coverage() {
+    echo "Running tests and generating coverage..."
+    
+    # Format code
+    cargo fmt
+    
+    # Run tests with coverage
+    cargo llvm-cov clean
+    cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+    cargo llvm-cov html
+    
+    # Check coverage percentage
+    local coverage=$(cargo llvm-cov --summarize | grep "line coverage" | awk '{print $4}')
+    echo "Coverage: $coverage"
+    
+    if (( $(echo "$coverage < 100" | bc -l) )); then
+        echo -e "${RED}Warning: Coverage below 100% ($coverage%)${NC}"
+    else
+        echo -e "${GREEN}Full coverage achieved!${NC}"
+    fi
+}
 # Function to open reports in browser
 open_reports() {
     echo "Opening reports in browser..."
@@ -271,15 +316,16 @@ open_reports() {
     fi
 }
 
+#
 # Function: Generate profiling data
 generate_profiling() {
     echo "Generating profiling data..."
     
     # Set profiling flags
     # export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
-    export CARGO_INCREMENTAL=0
-	export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
-	export RUSTDOCFLAGS="-Cpanic=abort" 
+	export CARGO_INCREMENTAL=0
+    	export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+    	export RUSTDOCFLAGS="-Cpanic=abort"
     
     # Clean and create profiling directory
     rm -rf target/debug/profiling
@@ -348,29 +394,81 @@ generate_profiling() {
     
     echo -e "${GREEN}Profiling reports generated successfully${NC}"
 }
-# Function: Configure project
-configure_project() {
-    echo "Configuring project..."
+#
+# Function: Generate profiling data
+tmp_generate_profiling() {
+    echo "Generating profiling data..."
     
-    # Create VS Code settings
-    mkdir -p .vscode
-    cat > .vscode/settings.json << 'EOL'
-{
-    "rust-analyzer.checkOnSave.command": "clippy",
-    "coverage-gutters.lcovname": "lcov.info",
-    "coverage-gutters.showLineCoverage": true,
-    "coverage-gutters.showRulerCoverage": true,
-    "editor.formatOnSave": true
+    # Set profiling flags
+    export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
+    
+    # Clean and create profiling directory
+    rm -rf target/debug/profiling
+    mkdir -p target/debug/profiling
+    
+    # Run tests with profiling
+    LLVM_PROFILE_FILE="target/debug/profiling/coverage-%p-%m.profraw" cargo test
+    
+    # Wait for file system
+    sleep 2
+    
+    # Check for profile data
+    if ! compgen -G "target/debug/profiling/*.profraw" > /dev/null; then
+        echo -e "${RED}No profile data generated${NC}"
+        return 1
+    fi
+    
+    # Merge profile data
+    llvm-profdata merge \
+        -sparse target/debug/profiling/*.profraw \
+        -o target/debug/profiling/merged.profdata || {
+        echo -e "${RED}Failed to merge profile data${NC}"
+        return 1
+    }
+    
+    # Find the correct test binary
+    TEST_BIN=$(find target/debug/deps \
+        -type f -executable \
+        -name "uppercase_converter-*" \
+        ! -name "*.d" \
+        -print0 | xargs -0 ls -t | head -n1)
+    
+    if [ ! -f "$TEST_BIN" ]; then
+        echo -e "${RED}Test binary not found${NC}"
+        return 1
+    fi
+    
+    echo "Using test binary: $TEST_BIN"
+    
+    # Generate HTML report
+    mkdir -p target/debug/profiling/html
+    llvm-cov show \
+        --use-color \
+        --ignore-filename-regex='/.cargo/registry' \
+        --format=html \
+        --instr-profile=target/debug/profiling/merged.profdata \
+        --object "$TEST_BIN" \
+        --output-dir=target/debug/profiling/html \
+        --show-instantiations \
+        --show-line-counts-or-regions || {
+        echo -e "${RED}Failed to generate HTML report${NC}"
+        return 1
+    }
+    
+    # Generate text report
+    llvm-cov report \
+        --use-color \
+        --ignore-filename-regex='/.cargo/registry' \
+        --instr-profile=target/debug/profiling/merged.profdata \
+        --object "$TEST_BIN" \
+        --show-branch-summary \
+        > target/debug/profiling/coverage_report.txt || {
+        echo -e "${RED}Failed to generate text report${NC}"
+        return 1
+    }
+    
+    echo -e "${GREEN}Profiling reports generated successfully${NC}"
 }
-EOL
-
-    # Initialize git repository
-    git init
-    echo "target/" > .gitignore
-    git add .
-    git commit -m "Initial commit"
-}
-
 # Main execution
 main() {
     echo "Starting project setup at $(date)"
@@ -401,5 +499,6 @@ main || {
     echo -e "${RED}Script failed! Check the log file: $LOG_FILE${NC}"
     exit 1
 }
+
 
 }
