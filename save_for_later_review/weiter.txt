@@ -1,0 +1,76 @@
+cargo test
+error: failed to run `rustc` to learn about target-specific information
+
+Caused by:
+  process didn't exit successfully: `/home/trapapa/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___ --print=file-names -Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort --crate-type bin --crate-type rlib --crate-type dylib --crate-type cdylib --crate-type staticlib --crate-type proc-macro --print=sysroot --print=split-debuginfo --print=crate-name --print=cfg -Wwarnings` (exit status: 1)
+  --- stderr
+  error: the option `Z` is only accepted on the nightly compiler
+
+  help: consider switching to a nightly toolchain: `rustup default nightly`
+
+  note: selecting a toolchain with `+toolchain` arguments require a rustup proxy; see <https://rust-lang.github.io/rustup/concepts/index.html>
+
+  note: for more information about Rust's stability policy, see <https://doc.rust-lang.org/book/appendix-07-nightly-rust.html#unstable-features>
+
+  error: 1 nightly option were parsed
+
+1883  pwd
+ 1884  echo 'Generating profiling data...'
+ 1885  export CARGO_INCREMENTAL=0 
+ 1886  export RUSTDOCFLAGS=-Cpanic=abort
+ 1887  RUSTDOCFLAGS=-Cpanic=abort
+ 1888  rm -rf target/debug/profiling
+ 1889  mkdir -p target/debug/profiling
+ 1890  LLVM_PROFILE_FILE=target/debug/profiling/coverage-%p-%m.profraw
+ 1891  cargo test
+ 1892  history 
+
+cargo test
+error: failed to run `rustc` to learn about target-specific information
+
+Caused by:
+  process didn't exit successfully: `/home/trapapa/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___ --print=file-names -Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort --crate-type bin --crate-type rlib --crate-type dylib --crate-type cdylib --crate-type staticlib --crate-type proc-macro --print=sysroot --print=split-debuginfo --print=crate-name --print=cfg -Wwarnings` (exit status: 1)
+  --- stderr
+  error: the option `Z` is only accepted on the nightly compiler
+
+  help: consider switching to a nightly toolchain: `rustup default nightly`
+
+  note: selecting a toolchain with `+toolchain` arguments require a rustup proxy; see <https://rust-lang.github.io/rustup/concepts/index.html>
+
+  note: for more information about Rust's stability policy, see <https://doc.rust-lang.org/book/appendix-07-nightly-rust.html#unstable-features>
+
+  error: 1 nightly option were parsed
+
+  cargo test
+error: failed to run `rustc` to learn about target-specific information
+
+Caused by:
+  process didn't exit successfully: `/home/trapapa/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___ --print=file-names -Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort --crate-type bin --crate-type rlib --crate-type dylib --crate-type cdylib --crate-type staticlib --crate-type proc-macro --print=sysroot --print=split-debuginfo --print=crate-name --print=cfg -Wwarnings` (exit status: 1)
+  --- stderr
+  error: unknown unstable option: `profile`
+
+cargo test error: unknown unstable option: `profile`
+
+
+/home/trapapa/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___  \
+--print=file-names \
+-Zprofile \
+-Ccodegen-units=1 \ 
+-Copt-level=0 \
+-Clink-dead-code \ 
+-Coverflow-checks=off \ 
+-Zpanic_abort_tests  \
+-Cpanic=abort \
+--crate-type bin \ 
+--crate-type rlib \
+--crate-type dylib \
+--crate-type cdylib \
+--crate-type staticlib \ 
+--crate-type proc-macro \
+--print=sysroot \
+--print=split-debuginfo \
+--print=crate-name \
+--print=cfg 
+
+
+/home/trapapa/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___ --print=file-names -Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort --crate-type bin --crate-type rlib --crate-type dylib --crate-type cdylib --crate-type staticlib --crate-type proc-macro --print=sysroot --print=split-debuginfo --print=crate-name --print=cfg -Wwarnings
