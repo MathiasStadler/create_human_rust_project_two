@@ -430,6 +430,8 @@ tmp_generate_profiling() {
 # Set profiling flags
     # export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
     export CARGO_INCREMENTAL=0
+    #old see here https://github.com/torrust/torrust-tracker/issues/1075
+    # export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
     export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
     export RUSTDOCFLAGS="-Cpanic=abort"
 

@@ -33,7 +33,7 @@ set -x
 
 /home/trapapa/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___  \
 --print=file-names \
--Zprofile \
+-Cinstrument-coverage \
 -Ccodegen-units=1 \ 
 -Copt-level=0 \
 -Clink-dead-code \ 
