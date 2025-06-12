@@ -27,6 +27,7 @@
         "rlib",
         "rustc",
         "RUSTDOCFLAGS",
+        "rustfilt",
         "RUSTFLAGS",
         "rustup",
         "ryanluker",

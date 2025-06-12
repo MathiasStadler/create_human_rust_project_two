@@ -80,6 +80,9 @@ check_requirements() {
     # Install cargo tools
     cargo install cargo-llvm-cov --quiet || true
     cargo install cargo-binutils --quiet || true
+
+    # Install from here https://doc.rust-lang.org/rustc/instrument-coverage.html for profiling
+    cargo install rustfilt --quiet || true
     
     # Install VS Code extensions
     code --install-extension ryanluker.vscode-coverage-gutters
