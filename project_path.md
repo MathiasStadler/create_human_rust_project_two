@@ -541,6 +541,25 @@ main || {
 }
 ```
 
+>[!TIP]
+>Shows the version of LLVM **used** by the Rust compiler
+><!-- -->
+>```bash
+>rustc --verbose --version
+>```
+><!-- -->
+<!-- -->
+>[!TIP]
+> LLVM version **local installed** shows the tool's LLVM version number
+><!-- -->
+> ```text
+>llvm-cov --version
+>```
+<!-- -->
+>[!NOTE]
+>Installing LLVM coverage tools - If you are building the Rust compiler from source, you can optionally use the bundled LLVM tools [![alt text][1]](https://doc.rust-lang.org/rustc/instrument-coverage.html#installing-llvm-coverage-tools)
+<!-- -->
+
 >[!NOTE]
 >Error: unknown unstable option: profile running coverage report workflow [![alt text][1]](https://github.com/torrust/torrust-tracker/issues/1075)
 >
@@ -667,6 +686,24 @@ FIXIT  remove is possible
 -->
 
 I never plan too far in advance. Carpe diem - Make the most of the day
+
+```txt
+check of env - which env / os / hardware > feedback file
+time stop
+testcase
+code coverage
+profiling
+size of files
+size of dev env
+2. this article
+https://doc.rust-lang.org/rustc/instrument-coverage.html#installing-llvm-coverage-tools
+why prof files no merge, must prov files merge
+3, Jenkins CI for rust project
+4. What do the optimization levels `-Os` and `-Oz` do in rustc?
+https://stackoverflow.com/questions/45608392/what-do-the-optimization-levels-os-and-oz-do-in-rustc
+5. # https://users.rust-lang.org/t/panic-unwind-is-not-compiled-with-this-crates-panic-strategy-abort/97154
+-C prefer-dynamic -C opt-level=3 -C panic=abort -C codegen-units=1
+```
 
 <!-- Link sign - Don't Found a better way :-( - You know a better method? - send me a email -->
 [1]: ./img/link_symbol.svg

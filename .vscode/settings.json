@@ -16,8 +16,10 @@
         "dylib",
         "eprintln",
         "FIXIT",
+        "formatjson",
         "lcovname",
         "lldb",
+        "nextest",
         "Ploease",
         "println",
         "profdata",
@@ -35,6 +37,7 @@
         "staticlib",
         "thiserror",
         "trapapa",
+        "udeps",
         "Wwarnings",
         "Zpanic"
     ]

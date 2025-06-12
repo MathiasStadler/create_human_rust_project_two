@@ -57,8 +57,22 @@ check_requirements() {
     cargo install cargo-binutils --quiet || true
 
     # Install from here https://doc.rust-lang.org/rustc/instrument-coverage.html for profiling
-    # cargo install rustfilt --quiet || true
-    cargo install rustfilt
+    cargo install rustfilt --quiet || true
+    # New
+    
+    #cargo install cargo-profiler --quiet || true
+    #cargo install cargo-llvm-cov --quiet || true
+    #cargo install cargo-binutils --quiet || true
+    #cargo install cargo-nextest --quiet || true
+    #cargo install cargo-watch --quiet || true
+    #cargo install cargo-udeps --quiet || true
+    #cargo install cargo-expand --quiet || true
+    #cargo install cargo-coverage --quiet || true
+    #cargo install cargo-coverage-gutters --quiet || true
+    #cargo install cargo-coverage-html --quiet || true
+    #cargo install cargo-coverage-report --quiet || true
+    ###BLOCK-COMMENT
+
     # List already installed
     #cargo install --list
     
@@ -356,9 +370,11 @@ export RUSTDOCFLAGS="-Cpanic=abort"
         return 1
     fi
     
+    # FROM HERE https://doc.rust-lang.org/rustc/instrument-coverage.html
     # Merge profile data
     llvm-profdata merge \
         -sparse target/debug/profiling/*.profraw \
+        -o formatjson5.profdata } \
         -o target/debug/profiling/merged.profdata || {
         echo -e "${RED}Failed to merge profile data${NC}"
         return 1
