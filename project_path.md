@@ -2,7 +2,7 @@
 # create_human_rust_project_two
 
 >[!NOTE]
->Symbol to mark web links [![alt text][1]](./README.md)
+>Symbol to mark web external links [![alt text][1]](./README.md)
 <!-- -->
 >[!Note]
 >Rust Profiling [![alt text][1]](https://doc.rust-lang.org/cargo/reference/profiles.html) a way to alter the compiler settings, influencing things like optimizations and debugging symbols.
@@ -612,12 +612,32 @@ main || {
 
 ![Alt-Text](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)
 
+<!--
+<a href="mailto:example@webnots.com?cc=example1@webnots.com&bcc=example2@webnots.com&Subject= Thanks%20for%20tutorials" target="_blank">Contact Us</a>
+-->
+>[!TIP]
+>How to Add Images in Markdown [![alt text][1]](https://hostman.com/tutorials/how-to-add-images-in-markdown/)
+<!-- -->
+>```txt
+>![Alt-Text](URL of image)
+>e.g.
+>![Alt-Text](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)
+>```
+<!-- -->
+<!-- -->
+>[!TIP]
+>How to Create HTML Email Links with Subject, CC and BCC? [![alt text][1]](https://www.webnots.com/html-email-links-tutorial/)
+><!-- -->
+>```html
+><a href="mailto:example@webnots.com?cc=example1@webnots.com&bcc=example2@webnots.com&Subject= Thanks%20for%20tutorials" target="_blank">Contact Us</a>
+>```
+<!-- -->
 <!-- 
 FIXIT  remove is possible
 <img style="vertical-align:middle" alt="Creative Commons BY-SA" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png">
 -->
 
-I never plan never far ahead. Carpe diam
+I never plan too far in advance. Carpe diem - Make the most of the day
 
 <!-- Link sign - Don't Found a better way :-( - You know a better method? - send me a email -->
 [1]: ./img/link_symbol.svg
