@@ -1,7 +1,14 @@
 <!-- TODO  missing project name-->
 # create_human_rust_project_two
 
-## Repo for the symbol to mark web links [![alt text][1]](./README.md)
+>[!NOTE]
+>Symbol to mark web links [![alt text][1]](./README.md)
+<!-- -->
+>[!Note]
+>Rust Profiling [![alt text][1]](https://doc.rust-lang.org/cargo/reference/profiles.html) a way to alter the compiler settings, influencing things like optimizations and debugging symbols.
+<!-- -->
+>[!NOTE]
+>GCC optimization levels. Which is better? [![alt text][1]](https://stackoverflow.com/questions/32940860/gcc-optimization-levels-which-is-better)
 
 ## Start Date of project
 
@@ -555,6 +562,60 @@ main || {
 >#code <file_name>
 >code test.txt
 >```
+
+## Markdown Marker - works on GitHub
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content
+<!-- -->
+> [!TIP]
+> Helpful advice for doing things better or more easily
+<!-- -->
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal
+<!-- -->
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems
+<!-- -->
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions
+&rarr;
+
+## Markdown arrow - works on GitHub
+
+- Up arrow (↑): `&uarr;`
+- Down arrow (↓): `&darr;`
+- Left arrow (←): `&larr;`
+- Right arrow (→): `&rarr;`
+- Double headed arrow (↔): `&harr;`
+
+## Another  good-looking notification or warning box in Github Flavoured Markdown?[![alt text][1]](https://stackoverflow.com/questions/58737436/how-to-create-a-good-looking-notification-or-warning-box-in-github-flavoured-mar)
+
+| :memo:        | Take note of this       |
+|---------------|:------------------------|
+
+| :point_up:    | Remember to not forget! |
+|---------------|:------------------------|
+
+| :link:    | Link to click! |
+|---------------|:------------------------|
+
+| :warning: WARNING          |
+|:---------------------------|
+| I should warn you ...      |
+
+| :boom: DANGER              |
+|:---------------------------|
+| Will explode when clicked! |
+
+## Creative Commons BY-SA Icon [![alt text][1]]("https://i.creativecommons.org/l/by-sa/4.0/80x15.png")
+
+![Alt-Text](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)
+
+<!-- 
+FIXIT  remove is possible
+<img style="vertical-align:middle" alt="Creative Commons BY-SA" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png">
+-->
 
 I never plan never far ahead. Carpe diam
 
