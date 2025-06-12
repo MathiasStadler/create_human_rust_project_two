@@ -432,7 +432,7 @@ tmp_generate_profiling() {
     export CARGO_INCREMENTAL=0
     #old see here https://github.com/torrust/torrust-tracker/issues/1075
     # export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
-    export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+    export RUSTFLAGS="-Cinstrument-coverage -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
     export RUSTDOCFLAGS="-Cpanic=abort"
 
 
@@ -542,7 +542,10 @@ main || {
 >Error: unknown unstable option: profile running coverage report workflow [![alt text][1]](https://github.com/torrust/torrust-tracker/issues/1075)
 >
 > First web match - The Rust flag profile was removed: [![alt text][1]](https://github.com/rust-lang/compiler-team/issues/798)
-> 
+>
+<!--    -->
+>[!NOTe]
+>Instrumentation-based Code Coverage [![alt text][1]](https://doc.rust-lang.org/rustc/instrument-coverage.html)
 
 ## for later
 

@@ -328,8 +328,11 @@ generate_profiling() {
     # Set profiling flags
     # export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
 	export CARGO_INCREMENTAL=0
-    export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
-    export RUSTDOCFLAGS="-Cpanic=abort"
+	export RUSTUP_TOOLCHAIN=nightly
+    export RUSTFLAGS="-Cinstrument-coverage  -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+    # export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"    
+
+export RUSTDOCFLAGS="-Cpanic=abort"
     
     # Clean and create profiling directory
     rm -rf target/debug/profiling
