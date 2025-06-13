@@ -1,32 +1,7 @@
-<!-- TODO  missing project name-->
-# create_human_rust_project_two
+# coverage
+# file:///home/trapapa/uppercase-converter/target/llvm-cov/html/html/index.html
 
->[!NOTE]
->Symbol to mark web external links [![alt text][1]](./README.md)
-<!-- -->
->[!Note]
->Rust Profiling [![alt text][1]](https://doc.rust-lang.org/cargo/reference/profiles.html) a way to alter the compiler settings, influencing things like optimizations and debugging symbols.
-<!-- -->
->[!NOTE]
->GCC optimization levels. Which is better? [![alt text][1]](https://stackoverflow.com/questions/32940860/gcc-optimization-levels-which-is-better)
 
-## Start Date of project
-
-```bash <!-- markdownlint-disable-line code-block-style -->
-$ date
-Wed Jun 11 04:23:36 PM CEST 2025
-```
-
-## OS-Version
-
-```bash <!-- markdownlint-disable-line code-block-style -->
-$ uname -a
-Linux debian 6.1.0-28-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.119-1 (2024-11-22) x86_64 GNU/Linux
-```
-
-## The BASH script should check if a project folder exists, and if not, create a folder, otherwise ask what should happen
-
-```bash
 # Function: Check system requirements
 
 #!/bin/bash
@@ -83,6 +58,23 @@ check_requirements() {
 
     # Install from here https://doc.rust-lang.org/rustc/instrument-coverage.html for profiling
     cargo install rustfilt --quiet || true
+    # New
+    
+    #cargo install cargo-profiler --quiet || true
+    #cargo install cargo-llvm-cov --quiet || true
+    #cargo install cargo-binutils --quiet || true
+    #cargo install cargo-nextest --quiet || true
+    #cargo install cargo-watch --quiet || true
+    #cargo install cargo-udeps --quiet || true
+    #cargo install cargo-expand --quiet || true
+    #cargo install cargo-coverage --quiet || true
+    #cargo install cargo-coverage-gutters --quiet || true
+    #cargo install cargo-coverage-html --quiet || true
+    #cargo install cargo-coverage-report --quiet || true
+    ###BLOCK-COMMENT
+
+    # List already installed
+    #cargo install --list
     
     # Install VS Code extensions
     code --install-extension ryanluker.vscode-coverage-gutters
@@ -354,7 +346,13 @@ generate_profiling() {
     echo "Generating profiling data..."
     
     # Set profiling flags
-    export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
+    # export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
+	export CARGO_INCREMENTAL=0
+	export RUSTUP_TOOLCHAIN=nightly
+    export RUSTFLAGS="-Cinstrument-coverage  -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+    # export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"    
+
+export RUSTDOCFLAGS="-Cpanic=abort"
     
     # Clean and create profiling directory
     rm -rf target/debug/profiling
@@ -372,9 +370,11 @@ generate_profiling() {
         return 1
     fi
     
+    # FROM HERE https://doc.rust-lang.org/rustc/instrument-coverage.html
     # Merge profile data
     llvm-profdata merge \
         -sparse target/debug/profiling/*.profraw \
+        -o formatjson5.profdata } \
         -o target/debug/profiling/merged.profdata || {
         echo -e "${RED}Failed to merge profile data${NC}"
         return 1
@@ -429,16 +429,8 @@ tmp_generate_profiling() {
     echo "Generating profiling data..."
     
     # Set profiling flags
-    #export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
-# Set profiling flags
-    # export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
-    export CARGO_INCREMENTAL=0
-    #old see here https://github.com/torrust/torrust-tracker/issues/1075
-    # export RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
-    export RUSTFLAGS="-Cinstrument-coverage -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
-    export RUSTDOCFLAGS="-Cpanic=abort"
-
-
+    export RUSTFLAGS="-C instrument-coverage -C link-dead-code"
+    
     # Clean and create profiling directory
     rm -rf target/debug/profiling
     mkdir -p target/debug/profiling
@@ -537,181 +529,4 @@ main || {
     exit 1
 }
 
-:
-}
-```
-
->[!TIP]
->Shows the version of LLVM **used** by the Rust compiler
-><!-- -->
->```bash
->rustc --verbose --version
->```
-><!-- -->
-<!-- -->
->[!TIP]
-> LLVM version **local installed** shows the tool's LLVM version number
-><!-- -->
-> ```text
->llvm-cov --version
->```
-<!-- -->
->[!NOTE]
->Installing LLVM coverage tools - If you are building the Rust compiler from source, you can optionally use the bundled LLVM tools [![alt text][1]](https://doc.rust-lang.org/rustc/instrument-coverage.html#installing-llvm-coverage-tools)
-<!-- -->
-
->[!NOTE]
->Error: unknown unstable option: profile running coverage report workflow [![alt text][1]](https://github.com/torrust/torrust-tracker/issues/1075)
->
-> First web match - The Rust flag profile was removed: [![alt text][1]](https://github.com/rust-lang/compiler-team/issues/798)
->
-<!--    -->
->[!NOTe]
->Instrumentation-based Code Coverage [![alt text][1]](https://doc.rust-lang.org/rustc/instrument-coverage.html)
-
-## for later
-
-```txt
-# https://users.rust-lang.org/t/panic-unwind-is-not-compiled-with-this-crates-panic-strategy-abort/97154
--C prefer-dynamic -C opt-level=3 -C panic=abort -C codegen-units=1
-```
-
-[profile.src]
--Zpanic-in-drop=abort
-
-export CARGO_PROFILE_RELEASE_PANIC="abort"
-
->[!TIP]
-> **Markdown line break**\
-> Try adding 2 spaces (or a backslash \) after the first line:
-<!-- -->
->[!NOTE]
-> **Info vs. Note**\
-> Info often refers to factual data or knowledge obtained through study or instruction,\ while a note is a brief written record for later reference.
-<!-- -->
->[!TIP]
->Fetch the link symbol from repo via command curl
->
->```bash
->curl --create-dirs --output-dir img -O  "https://raw.githubusercontent.com/MathiasStadler/link_symbol_svg/360d1327d05280d53de5fa816c522f89a35891ca/img/link_symbol.svg"
->```
-<!-- To comply with the format -->
-&nbsp;;
->[!TIP]
->cSpell - Enable / Disable checking sections of code [![alt text][1]](https://cspell.org/docs/Configuration/document-settings)
-<!-- To comply with the format -->
->```text
-><!-- spell-checker: disable -->
-><!-- spell-checker: enable -->
->```
-<!-- To comply with the format -->
-&nbsp;;
->[!TIP]
->Shortcut to create a new file VSCode
-<!-- To comply with the format -->
->```bash
->#code <file_name>
->code test.txt
->```
-
-## Markdown Marker - works on GitHub
-
-> [!NOTE]
-> Useful information that users should know, even when skimming content
-<!-- -->
-> [!TIP]
-> Helpful advice for doing things better or more easily
-<!-- -->
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal
-<!-- -->
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems
-<!-- -->
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions
-&rarr;
-
-## Markdown arrow - works on GitHub
-
-- Up arrow (↑): `&uarr;`
-- Down arrow (↓): `&darr;`
-- Left arrow (←): `&larr;`
-- Right arrow (→): `&rarr;`
-- Double headed arrow (↔): `&harr;`
-
-## Another  good-looking notification or warning box in Github Flavoured Markdown?[![alt text][1]](https://stackoverflow.com/questions/58737436/how-to-create-a-good-looking-notification-or-warning-box-in-github-flavoured-mar)
-
-| :memo:        | Take note of this       |
-|---------------|:------------------------|
-
-| :point_up:    | Remember to not forget! |
-|---------------|:------------------------|
-
-| :link:    | Link to click! |
-|---------------|:------------------------|
-
-| :warning: WARNING          |
-|:---------------------------|
-| I should warn you ...      |
-
-| :boom: DANGER              |
-|:---------------------------|
-| Will explode when clicked! |
-
-## Creative Commons BY-SA [![alt text][1]](https://creativecommons.org/share-your-work/cclicenses/) Icon ![Alt-Text](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)
-
->[!NOTE]
->Link address
-<!-- -->
->```text
->![Alt-Text](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)
->```
-<!-- -->
-<!--
-<a href="mailto:example@webnots.com?cc=example1@webnots.com&bcc=example2@webnots.com&Subject= Thanks%20for%20tutorials" target="_blank">Contact Us</a>
--->
->[!TIP]
->How to Add Images in Markdown [![alt text][1]](https://hostman.com/tutorials/how-to-add-images-in-markdown/)
-<!-- -->
->```txt
->![Alt-Text](URL of image)
->e.g.
->![Alt-Text](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)
->```
-<!-- -->
-<!-- -->
->[!TIP]
->How to Create HTML Email Links with Subject, CC and BCC? [![alt text][1]](https://www.webnots.com/html-email-links-tutorial/)
-><!-- -->
->```html
-><a href="mailto:example@webnots.com?cc=example1@webnots.com&bcc=example2@webnots.com&Subject= Thanks%20for%20tutorials" target="_blank">Contact Us</a>
->```
-<!-- -->
-<!-- 
-FIXIT  remove is possible
-<img style="vertical-align:middle" alt="Creative Commons BY-SA" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png">
--->
-
-I never plan too far in advance. Carpe diem - Make the most of the day
-
-```txt
-check of env - which env / os / hardware > feedback file
-time stop
-testcase
-code coverage
-profiling
-size of files
-size of dev env
-2. this article
-https://doc.rust-lang.org/rustc/instrument-coverage.html#installing-llvm-coverage-tools
-why prof files no merge, must prov files merge
-3, Jenkins CI for rust project
-4. What do the optimization levels `-Os` and `-Oz` do in rustc?
-https://stackoverflow.com/questions/45608392/what-do-the-optimization-levels-os-and-oz-do-in-rustc
-5. # https://users.rust-lang.org/t/panic-unwind-is-not-compiled-with-this-crates-panic-strategy-abort/97154
--C prefer-dynamic -C opt-level=3 -C panic=abort -C codegen-units=1
-```
-
-<!-- Link sign - Don't Found a better way :-( - You know a better method? - send me a email -->
-[1]: ./img/link_symbol.svg
+#}# Run the main function
