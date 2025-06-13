@@ -33,6 +33,7 @@
         "RUSTFLAGS",
         "rustup",
         "ryanluker",
+        "sccache",
         "staeps",
         "staticlib",
         "thiserror",

@@ -581,6 +581,27 @@ main || {
 
 export CARGO_PROFILE_RELEASE_PANIC="abort"
 
+## General Markdown Project hints and useful tips
+
+### Use of sccache to improve the speed of Rust Build
+
+- Install sccache
+
+```bash
+cargo install sccache
+```
+
+>[!TIP]
+>List all installed Rust binary
+><!-- -->
+>```BASH
+>cargo install --list
+>```
+><!-- -->
+> DESCRIPTION - part of this, the full description is called like this => cargo help install\
+>>This command manages Cargo’s local set of installed binary crates. Only packages which have executable [[bin]] or [[example]] targets can be installed, and all executables are installed into the
+installation root’s bin folder. By default only binaries, not examples, are installed
+<!-- -->
 >[!TIP]
 > **Markdown line break**\
 > Try adding 2 spaces (or a backslash \) after the first line:
